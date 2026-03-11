@@ -1,5 +1,4 @@
 import logging
-import re
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, explode, split, lower, regexp_replace, countDistinct, count
