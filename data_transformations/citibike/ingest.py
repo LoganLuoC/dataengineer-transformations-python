@@ -1,11 +1,20 @@
 import logging
-from typing import List
+import re
 
+from typing import List
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import regexp_replace
 
 
 def sanitize_columns(columns: List[str]) -> List[str]:
-    return [column.replace(" ", "_") for column in columns]
+    # return [column.replace(" ", "_") for column in columns]
+    # return [ re.sub(r"[^\w+]", "_", column)  for column in columns]
+    sanitized = []
+    for column in columns:
+        sanitized_column = re.sub(r"[^\w]+", "_", column)
+        sanitized_column = sanitized_column.strip("_")  # Remove leading/trailing underscores
+        sanitized.append(sanitized_column)
+    return sanitized
 
 
 def run(spark: SparkSession, ingest_path: str, transformation_path: str) -> None:
